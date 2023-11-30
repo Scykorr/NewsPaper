@@ -1,0 +1,5 @@
+# python manage.py shell
+
+from django.contrib.auth.models import User
+first_user = User.objects.create_user("Tony F", "tonyf@gmail.com", "tonyfpass")
+second_user = User.objects.create_user("Anna K", "annak@gmail.com", "annakpass")
