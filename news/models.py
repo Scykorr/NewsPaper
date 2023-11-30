@@ -21,7 +21,7 @@ class Author(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(unique=True)
+    name = models.CharField(max_length=255, unique=True)
 
 
 class Post(models.Model):
@@ -34,7 +34,7 @@ class Post(models.Model):
     ]
     post_type = models.CharField(max_length=5, choices=TYPES, default=news)
     create_date = models.DateTimeField(auto_now_add=True)
-    title = models.CharField(default='***')
+    title = models.CharField(max_length=255, default='***')
     text = models.TextField()
     post_rank = models.IntegerField(default=0)
 
