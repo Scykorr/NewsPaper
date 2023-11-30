@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Sum
 
 
 class Author(models.Model):
@@ -7,7 +8,17 @@ class Author(models.Model):
     user_rank = models.IntegerField(default=0)
 
     def update_rating(self):
-        pass
+        post_rank = self.post_set.aggregate(post_ranking=Sum('post_rank'))
+        sum_post_rank = 0
+        sum_post_rank += post_rank.get('post_ranking')
+
+        comment_rank = self.author.comment_set.aggregate(comment_ranking=Sum('comment_rank'))
+        sum_comm_rank = 0
+        sum_comm_rank += comment_rank.get('comment_ranking')
+
+        self.user_rank = sum_post_rank * 3 + sum_comm_rank
+        self.save()
+
 
 class Category(models.Model):
     name = models.CharField(unique=True)
@@ -39,7 +50,7 @@ class Post(models.Model):
         self.save()
 
     def preview(self):
-        return f'{self.text[:124]}...'
+        return f'{self.text[0:123]}...'
 
 
 class PostCategory(models.Model):
