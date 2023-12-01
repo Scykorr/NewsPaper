@@ -1,5 +1,58 @@
 # python manage.py shell
 
-from django.contrib.auth.models import User
-first_user = User.objects.create_user("Tony F", "tonyf@gmail.com", "tonyfpass")
-second_user = User.objects.create_user("Anna K", "annak@gmail.com", "annakpass")
+from news.models import *
+first_user = User.objects.create_user(username="Tony F", email="tonyf@gmail.com", password="tonyfpass")
+second_user = User.objects.create_user(username="Anna K", email="annak@gmail.com", password="annakpass")
+first_author = Author.objects.create(author=first_user)
+second_author = Author.objects.create(author=second_user)
+it_category = Category.objects.create(name='IT')
+sport_category = Category.objects.create(name='Спорт')
+politic_category = Category.objects.create(name='Политика')
+science_category = Category.objects.create(name='Наука')
+first_news = Post.objects.create(author=first_author, post_type='NEWS', title='Конференция PyConf', text='Скоро пройдет очередная международная конференция PyConf.')
+first_article = Post.objects.create(author=second_author, post_type='ARTCL', title='Африканский слон.', text='род африканских млекопитающих отряда хоботных. Предположительно включает два современных вида: саванный слон (Loxodonta africana (L. Blumenbach, 1797)) и лесной слон (Loxodonta cyclotis (Paul Matschie, 1900)). Последние исследования ДНК африканских слонов дают возможность предполагать, что эти два вида рода Loxodonta появились 1,9 и 6 миллионов лет назад. До недавнего времени они считались подвидами (Loxodonta africana africana и L. africana cyclotis). Это самые крупные наземные животные, их масса может превышать 6 тонн.')
+second_article = Post.objects.create(author=second_author, post_type='ARTCL', title='Спортивное программирование', text='Представьте себе коридор с бесконечным рядом запертых дверей. Если превратить их открывание в задачу с алгоритмом, у нее будет несколько решений.Классическому, «промышленному» программисту поручат отлить лом, вскрывающий как можно больше дверей, и дешевый в производстве. А задача спортивного — понять, какая отмычка взломает все за пять минут. К слову, спортивные программисты встречаются в 70 раз реже.Ежегодно программисты со всего мира (главным образом, студенты) встречаются на командных и индивидуальных турнирах. Самые престижные: старейший в своем роде чемпионат ICPC (International Collegiate Programming Contest), конкурс Google Code Jam, олимпиада IOI.Конечно, замки там никто не вскрывает — обходятся математикой и написанием кода. Задания финалов в разы сложнее примера выше, а время жестко ограничено. Да и по накалу страстей ИТ-чемпионаты порой дают фору Олимпийским играм.')
+first_news.category.add(it_category)
+first_article.category.add(science_category)
+second_article.category.add(it_category)
+second_article.category.add(sport_category)
+first_comment = Comment.objects.create(post=first_news, user=second_author.author, text='Круто!')
+second_comment = Comment.objects.create(post=first_news, user=second_author.author, text='Посмотрим...')
+third_comment = Comment.objects.create(post=first_article, user=first_author.author, text='Можно было и интереснее написать:(')
+fourth_comment = Comment.objects.create(post=second_article, user=first_author.author, text='Интересно, очень даже интересно!')
+first_news.like()
+first_news.like()
+first_news.like()
+first_article.like()
+first_article.dislike()
+first_article.dislike()
+first_article.dislike()
+second_article.like()
+second_article.like()
+second_article.dislike()
+first_comment.like()
+second_comment.dislike()
+third_comment.like()
+third_comment.like()
+fourth_comment.like()
+first_author.update_rating()
+second_author.update_rating()
+best_user = Author.objects.order_by('-user_rank')[:1]
+for el in best_user:
+     el.author.username
+     el.user_rank
+best_article = Post.objects.filter(post_type='ARTCL').order_by('-post_rank')[:1]
+for el in best_article:
+     el.create_date
+     el.author.author.username
+     el.post_rank
+     el.title
+     el.preview()
+best_article_comments = Comment.objects.filter(post=best_article)
+for el in best_article_comments:
+    el.create_date
+    el.user.username
+    el.comment_rank
+    el.text
+
+
