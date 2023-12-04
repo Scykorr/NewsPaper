@@ -29,8 +29,8 @@ class Post(models.Model):
     article = 'ARTCL'
 
     TYPES = [
-        (news, 'Новость'),
-        (article, 'Статья')
+        ('NEWS', 'Новость'),
+        ('ARTCL', 'Статья')
     ]
     post_type = models.CharField(max_length=5, choices=TYPES, default=news)
     create_date = models.DateTimeField(auto_now_add=True)
