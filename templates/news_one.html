@@ -8,5 +8,12 @@
 
 <!-- В контенте на странице мы выводим сам товар, идентификатор которого был передан в url -->
 {% block content %}
-    <h1>{{ news_one }}</h1>
+    {% if news_one %}
+        <h2>{{ news_one.title }}</h2>
+        <h3>{{ news_one.create_date|date:'d.m.Y' }}</h3>
+        <p>{{ news_one.text }}</p>
+        <h5>{{ news_one.author.author }}</h5>
+    {% else %}
+        <h2>Упс! Тут ничего нет...</h2>
+    {% endif %}
 {% endblock content %}

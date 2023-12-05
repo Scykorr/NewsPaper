@@ -8,5 +8,25 @@
 
 <!-- В контенте на странице мы выводим сам товар, идентификатор которого был передан в url -->
 {% block content %}
-    <h1>{{ news }}</h1>
+    <h1>Новости</h1>
+    <h4>Общее количество: {{ news|length }}</h4>
+    {% if news %}
+        <table>
+            <tr>
+                <td>Заголовок</td>
+                <td>Дата публикации</td>
+                <td>Основной текст</td>
+            </tr>
+            {% for next_news in news %}
+                <tr>
+                    <td>{{ next_news.title }}</td>
+                    <td>{{ next_news.create_date|date:'d.m.Y' }}</td>
+                    <td>{{ next_news.text|truncatewords:20 }}</td>
+                </tr>
+            {% endfor %}
+
+        </table>
+    {% else %}
+        <h2>Новостей нет!</h2>
+    {% endif %}
 {% endblock content %}

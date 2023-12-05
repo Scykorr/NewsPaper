@@ -11,7 +11,7 @@ class NewsList(ListView):
     # ordering = 'name'
     # Указываем имя шаблона, в котором будут все инструкции о том,
     # как именно пользователю должны быть показаны наши объекты
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('-create_date')
     template_name = 'news.html'
     # Это имя списка, в котором будут лежать все объекты.
     # Его надо указать, чтобы обратиться к списку объектов в html-шаблоне.
