@@ -1,8 +1,7 @@
 import datetime
 
-from django.shortcuts import render
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
-
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from .filters import NewsFilter
@@ -43,7 +42,7 @@ class NewsSearch(ListView):
         return context
 
 
-class NewsCreate(CreateView):
+class NewsCreate(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'news_edit.html'
@@ -54,19 +53,19 @@ class NewsCreate(CreateView):
         return super().form_valid(form)
 
 
-class NewsUpdate(UpdateView):
+class NewsUpdate(PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'news_edit.html'
 
 
-class NewsDelete(DeleteView):
+class NewsDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('post_list')
 
 
-class ArticleCreate(CreateView):
+class ArticleCreate(PermissionRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     template_name = 'article_edit.html'
@@ -77,13 +76,13 @@ class ArticleCreate(CreateView):
         return super().form_valid(form)
 
 
-class ArticleUpdate(UpdateView):
+class ArticleUpdate(PermissionRequiredMixin, UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'article_edit.html'
 
 
-class ArticleDelete(DeleteView):
+class ArticleDelete(PermissionRequiredMixin, DeleteView):
     model = Post
     template_name = 'article_delete.html'
     success_url = reverse_lazy('post_list')
