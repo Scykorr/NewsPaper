@@ -43,6 +43,8 @@ class NewsSearch(ListView):
 
 
 class NewsCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
+    raise_exception = True
     form_class = PostForm
     model = Post
     template_name = 'news_edit.html'
@@ -54,18 +56,24 @@ class NewsCreate(PermissionRequiredMixin, CreateView):
 
 
 class NewsUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
+    raise_exception = True
     form_class = PostForm
     model = Post
     template_name = 'news_edit.html'
 
 
 class NewsDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.delete_post',)
+    raise_exception = True
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('post_list')
 
 
 class ArticleCreate(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
+    raise_exception = True
     form_class = PostForm
     model = Post
     template_name = 'article_edit.html'
@@ -77,12 +85,16 @@ class ArticleCreate(PermissionRequiredMixin, CreateView):
 
 
 class ArticleUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.change_post',)
+    raise_exception = True
     form_class = PostForm
     model = Post
     template_name = 'article_edit.html'
 
 
 class ArticleDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.delete_post',)
+    raise_exception = True
     model = Post
     template_name = 'article_delete.html'
     success_url = reverse_lazy('post_list')
