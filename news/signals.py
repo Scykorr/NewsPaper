@@ -7,24 +7,22 @@ from .models import Post
 
 
 @receiver(m2m_changed, sender=Post.category.through)
-def news_created(instance, created=None, **kwargs):
-    if not created:
-        return
+def news_created(sender, action, pk_set, instance, **kwargs):
+    if action != 'post_add':
+        return None
 
-    emails = User.objects.filter(
-        subscriptions__category=instance.category
-    ).values_list('email', flat=True)
+    emails = User.objects.filter(subscriptions__category__in=pk_set).values_list('email', flat=True)
 
-    subject = f'Новая новость в категории {instance.category}'
+    subject = f'Новый товар в категории {instance.category}'
 
     text_content = (
-        f'Заголовок: {instance.title}\n'
-        f'Ссылка на новость: http://127.0.0.1:8000{instance.get_absolute_url()}'
+        f'Заголовок новости: {instance.title}\n'
+        f'Ссылка на товар: http://127.0.0.1:8000{instance.get_absolute_url()}'
     )
     html_content = (
-        f'Товар: {instance.title}<br>'
-        f'<a href="http://127.0.0.1:8000{instance.get_absolute_url()}">'
-        f'Ссылка на новость</a>'
+        f'Заголовок новости: {instance.title}<br>'
+        f'<a href="http://127.0.0.1{instance.get_absolute_url()}">'
+        f'Ссылка на товар</a>'
     )
     for email in emails:
         msg = EmailMultiAlternatives(subject, text_content, None, [email])
