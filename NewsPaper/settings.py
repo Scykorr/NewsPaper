@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.yandex',
+    "django_apscheduler",
 
 ]
 
@@ -147,12 +148,11 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_FORMS = {"signup": "accounts.forms.CustomSignupForm"}
 
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'fedos.py'
-EMAIL_HOST_PASSWORD = 'bzxvzysphqyhkjkz'
+EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
@@ -161,3 +161,6 @@ DEFAULT_FROM_EMAIL = 'fedos.py@yandex.ru'
 SERVER_EMAIL = 'fedos.py@yandex.ru'
 
 EMAIL_SUBJECT_PREFIX = '[Новостной портал]'
+
+SITE_URL = 'http://127.0.0.1:8000'
+
