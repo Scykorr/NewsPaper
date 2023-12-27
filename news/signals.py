@@ -13,16 +13,18 @@ def news_created(sender, action, pk_set, instance, **kwargs):
 
     emails = User.objects.filter(subscriptions__category__in=pk_set).values_list('email', flat=True)
 
-    subject = f'Новый товар в категории {instance.category}'
+    subject = f'Новый пост в одной из категорий, на которые Вы подписаны: {instance.category.all()}'
 
     text_content = (
         f'Заголовок новости: {instance.title}\n'
-        f'Ссылка на товар: http://127.0.0.1:8000{instance.get_absolute_url()}'
+        f'Текст новости: {instance.preview()}\n'
+        f'Ссылка на новость: http://127.0.0.1:8000{instance.get_absolute_url()}'
     )
     html_content = (
-        f'Заголовок новости: {instance.title}<br>'
-        f'<a href="http://127.0.0.1{instance.get_absolute_url()}">'
-        f'Ссылка на товар</a>'
+        f'Заголовок новости: {instance.title}\n<br>\n'
+        f'Текст новости: {instance.preview()}\n'
+        f'<a href="http://127.0.0.1:8000{instance.get_absolute_url()}">'
+        f'Ссылка на новость</a>'
     )
     for email in emails:
         msg = EmailMultiAlternatives(subject, text_content, None, [email])
