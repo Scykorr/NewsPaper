@@ -1,9 +1,10 @@
 from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
-from django.db.models.signals import m2m_changed
+from django.db.models.signals import m2m_changed, post_save
 from django.dispatch import receiver
 
-from .models import Post
+from .models import Post, Subscription
+from .tasks import get_notification_new_news
 
 
 @receiver(m2m_changed, sender=Post.category.through)
@@ -30,3 +31,12 @@ def news_created(sender, action, pk_set, instance, **kwargs):
         msg = EmailMultiAlternatives(subject, text_content, None, [email])
         msg.attach_alternative(html_content, "text/html")
         msg.send()
+
+
+@receiver(post_save, sender=Post)
+def send_news_notification(sender, instance, **kwargs):
+    if kwargs["created"]:
+        instance_id = instance.pk
+        subscribers = Subscription.objects.all()
+        to_email = [subscriber.user.email for subscriber in subscribers]
+        get_notification_new_news.delay(instance_id, to_email)

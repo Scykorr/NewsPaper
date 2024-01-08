@@ -12,6 +12,9 @@ from .filters import NewsFilter
 from .forms import PostForm
 from .models import Post, Category, Subscription
 
+from django.http import HttpResponse
+from django.views import View
+
 
 class NewsList(ListView):
     queryset = Post.objects.all().order_by('-create_date')
@@ -41,7 +44,8 @@ class NewsSearch(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['time_now'] = datetime.datetime.now(datetime.UTC)
+        # context['time_now'] = datetime.datetime.now(datetime.UTC)
+        context['time_now'] = datetime.datetime.utcnow()
         context['filterset'] = self.filterset
         return context
 
