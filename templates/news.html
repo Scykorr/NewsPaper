@@ -7,12 +7,14 @@
     Новости
 {% endblock title %}
 
+
 {% block content %}
     <h1>Новости</h1>
     <h4>Общее количество: {{ news|length }}</h4>
     <h5>{% current_time '%b %d %Y' %}</h5>
     
     {% if news %}
+        
         <table>
             <tr>
                 <td>Заголовок</td>
@@ -28,6 +30,7 @@
             {% endfor %}
 
         </table>
+        
     {% else %}
         <h2>Новостей нет!</h2>
     {% endif %}

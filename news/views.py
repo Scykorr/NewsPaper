@@ -2,6 +2,7 @@ import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.core.cache import cache
 from django.db.models import Exists, OuterRef
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -13,7 +14,6 @@ from .forms import PostForm
 from .models import Post, Category, Subscription
 
 from django.http import HttpResponse
-from django.views import View
 
 
 class NewsList(ListView):
@@ -28,6 +28,15 @@ class OneNews(DetailView):
     template_name = 'news_one.html'
     context_object_name = 'news_one'
     pk_url_kwarg = 'pk'
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'news-{self.kwargs["pk"]}',
+                        None)
+
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'news-{self.kwargs["pk"]}', obj)
+            return obj
 
 
 class NewsSearch(ListView):
