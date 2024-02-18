@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Post, PostCategory, Author, Category, Comment
+from modeltranslation.admin import TranslationAdmin
 
 
 def nullfy_post_rank(modeladmin, request, queryset):
@@ -17,6 +18,16 @@ class PostAdmin(admin.ModelAdmin):
 
     search_fields = ('title', 'category__name')
     actions = [nullfy_post_rank]
+
+ 
+class CategoryAdmintrans(TranslationAdmin):
+    model = Category
+ 
+ 
+class PostAdmintrans(TranslationAdmin):
+    model = Post
+ 
+
 
 
 admin.site.register(Post, PostAdmin)
